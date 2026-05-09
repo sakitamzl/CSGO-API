@@ -2,8 +2,8 @@ name: Deploy to GitHub pages
 
 on:
   workflow_dispatch:
-  # schedule:
-  #     - cron: "0 6 * * *"
+  schedule:
+      - cron: "0 6 * * *"
   push:
     paths:
       - "public/docs/index.html"
