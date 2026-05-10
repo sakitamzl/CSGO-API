@@ -13,7 +13,7 @@ on:
       languages:
         description: "Comma-separated folder codes (e.g. en,ru,uk) or 'all'. Empty = use vars.LANGUAGES."
         required: false
-        default: ""
+        default: "zh-CN"
         type: string
   schedule:
       - cron: "0 6 * * *"        
