@@ -16,7 +16,7 @@ on:
         default: "zh-CN"
         type: string
   schedule:
-      - cron: "0 6 * * *"        
+      - cron: "0 10 * * *"        
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      LANGUAGES: ${{ github.event.inputs.languages || vars.LANGUAGES }}
+      LANGUAGES: ${{ github.event.inputs.languages || vars.LANGUAGES}} || "zh-CN"
       FORCE_FLAG: ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
     steps:
