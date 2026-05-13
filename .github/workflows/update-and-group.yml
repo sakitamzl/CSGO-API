@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      LANGUAGES: ${{ github.event.inputs.languages || vars.LANGUAGES}} || "zh-CN"
+      LANGUAGES: ${{ github.event.inputs.languages || vars.LANGUAGES || 'zh-CN' }}
       FORCE_FLAG: ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
     steps:
