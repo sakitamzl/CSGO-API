@@ -1,27 +1,45 @@
-name: Deploy to GitHub pages
+name: Sync Fork
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:          # 手动触发
   schedule:
-      - cron: "0 6 * * *"
-  push:
-    paths:
-      - "public/docs/index.html"
+    - cron: "0 6 * * *"       # 每天 UTC 6:00 自动同步
+  # 原有 push 触发已移除，因为同步不需要在推送到 Fork 时触发
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
-      - run: |
-          git init
-          git add -A
-          git config --local user.email "github-actions[bot]"
-          git config --local user.name "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m 'deploy'
-        working-directory: ./public/docs
-      - uses: JamesIves/github-pages-deploy-action@v4.8.0
+      - name: Checkout Fork
+        uses: actions/checkout@v4
         with:
-          branch: gh-pages
-          folder: public/docs
+          ref: main              # 或你的默认分支，例如 master
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPO.git
+          # 上游仓库地址建议存到 Secrets，使用时替换为：
+          # git remote add upstream https://${{ secrets.UPSTREAM_REPO }}.git
+          # 并在仓库 Settings > Secrets > Actions 中创建 UPSTREAM_REPO 变量
+          # 例如 UPSTREAM_REPO = ORIGINAL_OWNER/ORIGINAL_REPO
+
+      - name: Fetch upstream changes
+        run: git fetch upstream
+
+      - name: Merge upstream changes
+        run: |
+          git checkout main   # 确保在需要同步的分支上
+          git merge upstream/main --allow-unrelated-histories
+          # 如果上游默认分支名不是 main，请对应修改
+
+      - name: Push to Fork
+        run: |
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # 自动授权
