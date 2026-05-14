@@ -23,7 +23,7 @@ jobs:
 
       - name: Add upstream remote
         run: |
-          git remote add upstream https://github.com/ByMykel/CSGO-API
+          git remote add upstream https://github.com/ByMykel/CSGO-API.git
           # 上游仓库地址建议存到 Secrets，使用时替换为：
           # git remote add upstream https://${{ secrets.UPSTREAM_REPO }}.git
           # 并在仓库 Settings > Secrets > Actions 中创建 UPSTREAM_REPO 变量
