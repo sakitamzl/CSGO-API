@@ -5,7 +5,8 @@ on:
   schedule:
     - cron: "0 6 * * *"       # 每天 UTC 6:00 自动同步
   # 原有 push 触发已移除，因为同步不需要在推送到 Fork 时触发
-
+permissions: write-all
+  
 jobs:
   sync:
     runs-on: ubuntu-latest
