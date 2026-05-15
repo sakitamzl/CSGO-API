@@ -35,7 +35,7 @@ jobs:
       - name: Merge upstream changes
         run: |
           git checkout main   # 确保在需要同步的分支上
-          git merge upstream/main --allow-unrelated-histories
+          git merge upstream/main -X theirs upstream/main --allow-unrelated-histories
           # 如果上游默认分支名不是 main，请对应修改
 
       - name: Push to Fork
